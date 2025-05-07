@@ -1,63 +1,128 @@
-# palandrome-challenge
+# 🧠 Palindrome Challenge
 
-Debes tener instalado previamente Docker y Docker Composer en 
-el equipo a ejecutar el test.
-Luego, ejecutar el comando
+Este proyecto consiste en una aplicación fullstack para verificar si una palabra o frase es un **palíndromo**, almacenarla en una base de datos y mostrar un historial reciente.
 
-En linux
-dar permisos a rebuild.sh y migration.sh
+---
+
+## 🚀 Requisitos
+
+- Tener **Docker** y **Docker Compose** instalados en el sistema.
+
+---
+
+## ⚙️ Instalación y ejecución
+
+### 🔧 1. Dar permisos a los scripts (Linux)
+
+```bash
 sudo chmod +x scripts/linux/rebuild.sh
+sudo chmod +x scripts/linux/migrations.sh
+```
 
-y luego
+### 🛠️ 2. Ejecutar el build y entorno completo
 
-scripts/linux/.rebuild.sh (hacer el build + clean)
-scripts/linux/.migrations.sh (correr migration + seeder)
+```bash
+scripts/linux/rebuild.sh     # Limpia, compila y levanta los containers
+scripts/linux/migrations.sh  # Aplica migraciones y ejecuta el seeder
+```
 
-para windows, tenemos 
-rebuild.bat y migrations.bat
+---
 
-(en /scripts/windows)
--------------------------------------
--------------------------------------
+### 🪟 Windows
 
-También podemos ejecutar 
+En `scripts/windows/` tenés disponibles los siguientes scripts:
+
+```bat
+rebuild.bat       :: Compila y levanta los contenedores
+migrations.bat    :: Corre migraciones y seeder
+```
+
+Ejecutalos haciendo doble clic o desde consola.
+
+---
+
+### 🐳 Alternativa manual (opcional)
+
+Si preferís hacerlo manualmente:
+
+```bash
 docker-compose up --build
+```
 
-sobre el root del proyecto. Esto descargará los containers necesarios
-para poder ejecutar el mismo.
+Luego ejecutá las migraciones con:
 
-Una vez levantado los containers, podemos probar el microservicio "ms-palindrome" con este curl
+```bash
+docker exec -it ms_palindrome npx prisma migrate dev --name init --skip-seed
+docker exec -it ms_palindrome npx ts-node prisma/seed.ts
+```
 
--------------------------------------
--------------------------------------
+---
 
-Endpoints =>
+## 📡 Endpoints disponibles
 
-Health
+### 🔁 Health Check
 
+```bash
 curl http://localhost:3000/health
+```
 
-Swagger => http://localhost:3000/api-docs
+---
 
-Get Users =>
+### 📘 Documentación Swagger
 
+[http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+
+---
+
+### 👤 Obtener usuarios
+
+```bash
 curl -s http://localhost:3000/v1/users
+```
 
-Get Words => 
+---
 
+### 🧠 Obtener palíndromos
+
+```bash
 curl -s http://localhost:3000/v1/palidrome
+```
 
-Crear Palidromo => (POST)
+---
 
+### 📝 Crear palíndromo
+
+```bash
 curl -X POST http://localhost:3000/v1/palidrome \
   -H "Content-Type: application/json" \
   -d '{"word": "reconocer"}'
+```
 
-Latest => (GET)
+---
 
-curl -X GET "http://localhost:3000/v1/palidrome/latest?limit=3" -H "Content-Type: application/json"
+### 🕓 Obtener últimos palíndromos
 
+```bash
+curl -X GET "http://localhost:3000/v1/palidrome/latest?limit=3" \
+  -H "Content-Type: application/json"
+```
 
--------------------------------------
--------------------------------------
+---
 
+## ✅ Orden recomendado para ejecutar
+
+1. **Build del proyecto**  
+   - Linux: `scripts/linux/rebuild.sh`  
+   - Windows: `scripts/windows/rebuild.bat`
+
+2. **Migraciones y datos iniciales**  
+   - Linux: `scripts/linux/migrations.sh`  
+   - Windows: `scripts/windows/migrations.bat`
+
+3. Accedé a `http://localhost:3000/api-docs` o probá con los endpoints vía `curl`.
+
+---
+
+## 👨‍💻 Autor
+
+- Maximiliano Rossi
