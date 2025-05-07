@@ -15,22 +15,20 @@ Este proyecto consiste en una aplicación fullstack para verificar si una palabr
 ### 🔧 1. Dar permisos a los scripts (Linux)
 
 ```bash
-sudo chmod +x scripts/linux/rebuild.sh
-sudo chmod +x scripts/linux/migrations.sh
+sudo chmod +x rebuild.sh
+sudo chmod +x migrations.sh
 ```
 
 ### 🛠️ 2. Ejecutar el build y entorno completo
 
 ```bash
-scripts/linux/rebuild.sh     # Limpia, compila y levanta los containers
-scripts/linux/migrations.sh  # Aplica migraciones y ejecuta el seeder
+./rebuild.sh     # Limpia, compila y levanta los containers
+./migrations.sh  # Aplica migraciones y ejecuta el seeder
 ```
 
 ---
 
 ### 🪟 Windows
-
-En `scripts/windows/` tenés disponibles los siguientes scripts:
 
 ```bat
 rebuild.bat       :: Compila y levanta los contenedores
