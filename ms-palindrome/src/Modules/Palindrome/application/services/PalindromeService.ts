@@ -23,7 +23,7 @@ export class PalindromeService {
     try {
       const palindrome: Palindrome = {
         uuid: uuid,
-        word: '', // Ajustá esto según tus campos reales
+        word: '', 
         isPalindrome: false,
         createdAt: createdAt.value
       };
