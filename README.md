@@ -126,3 +126,5 @@ curl -X GET "http://localhost:3000/v1/palidrome/latest?limit=3" \
 ## 👨‍💻 Autor
 
 - Maximiliano Rossi
+- rossi.maxi@gmail.com
+- 0341-3417797702
