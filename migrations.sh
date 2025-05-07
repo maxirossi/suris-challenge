@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "🔄 Ejecutando migraciones dentro del contenedor ms_palindrome..."
 
