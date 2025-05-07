@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import Logger from '../../../Shared/domain/Logger';
 import WinstonLogger from '../../../Shared/infrastructure/WinstoneLogger';
 import { InternalResponse } from '../../../Shared/dto/InternalResponse';
-import { Palindrome} from '../interfaces/Palindrome';
+import { Palindrome } from '../interfaces/Palindrome';
 import { PalindromeDTO } from '../interfaces/PalindromeDTO';
 
 export class PalindromeRepository {
@@ -17,9 +17,14 @@ export class PalindromeRepository {
 
   async create(data: Palindrome): Promise<InternalResponse> {
     try {
-      const {...createData } = data; 
-      await this.prisma.palindrome.create({ data: createData });
-      return { success: true, message: 'Palindrome created successfully' };
+      const { ...createData } = data;
+      const created = await this.prisma.palindrome.create({ data: createData });
+
+      return {
+        success: true,
+        message: 'Palindrome created successfully',
+        isPalindrome: created.isPalindrome
+      };
     } catch (error) {
       this.logger.error(error);
       return { success: false, message: 'Error creating palindrome' };
@@ -43,11 +48,11 @@ export class PalindromeRepository {
 
   async getById(uuid: string): Promise<PalindromeDTO> {
     try {
-      const palindrome = await this.prisma.palindrome.findUnique({
+      const palindrome = await this.prisma.palindrome.findFirst({
         where: { uuid, active: true }
       });
       if (palindrome) {
-        return { success: true, palindromes:palindrome};
+        return { success: true, palindromes: palindrome };
       } else {
         return { success: false };
       }
@@ -59,14 +64,13 @@ export class PalindromeRepository {
 
   async update(uuid: string, data: Palindrome): Promise<InternalResponse> {
     try {
-      const existing = await this.prisma.palindrome.findUnique({
+      const existing = await this.prisma.palindrome.findFirst({
         where: { uuid, active: true }
       });
       if (existing) {
-        const { ...updatedData } = data; 
         await this.prisma.palindrome.update({
           where: { uuid },
-          data: updatedData
+          data
         });
         return { success: true, message: 'Palindrome updated successfully' };
       } else {
@@ -100,12 +104,12 @@ export class PalindromeRepository {
 
   async getByWord(word: string): Promise<PalindromeDTO> {
     try {
-      const palindrome = await this.prisma.palindrome.findUnique({
+      const palindrome = await this.prisma.palindrome.findFirst({
         where: { word, active: true }
       });
 
       if (palindrome) {
-        return { success: true, palindromes:palindrome };
+        return { success: true, palindromes: palindrome };
       } else {
         return { success: false };
       }
@@ -122,30 +126,37 @@ export class PalindromeRepository {
         orderBy: { createdAt: 'desc' },
         take: limit
       });
-  
-      return { success: true, message: 'Latest palindromes retrieved successfully', palindromes };
+
+      return {
+        success: true,
+        message: 'Latest palindromes retrieved successfully',
+        palindromes
+      };
     } catch (error) {
       this.logger.error(error);
       return { success: false, message: 'Error retrieving latest palindromes' };
     }
   }
-  
-  async findByWord(word: string): Promise<Palindrome | null> {
-    const result = await this.prisma.palindrome.findUnique({
-      where: { word }
-    });
-  
-    if (!result) return null;
-  
-    return new Palindrome(
-      new Uuid(result.uuid),
-      new Word(result.word),
-      new IsPalindrome(result.is_palindrome),
-      new CreatedAt(result.created_at),
-      result.deleted_at ? new DeletedAt(result.deleted_at) : undefined,
-      result.modified_at ? new ModifiedAt(result.modified_at) : undefined
-    );
+
+  async findByWord(word: string): Promise<any | null> {
+    try {
+      const result = await this.prisma.palindrome.findFirst({
+        where: { word }
+      });
+
+      if (!result) return null;
+
+      return {
+        uuid: result.uuid,
+        word: result.word,
+        isPalindrome: result.isPalindrome,
+        createdAt: result.createdAt,
+        deletedAt: result.deletedAt || null,
+        modifiedAt: result.modifiedAt || null
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
   }
-  
-  
 }

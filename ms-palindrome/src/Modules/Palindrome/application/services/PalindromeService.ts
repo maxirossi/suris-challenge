@@ -11,6 +11,7 @@ import { CaseUseException } from '../../../Shared/domain/exceptions/CaseUseExcep
 export class PalindromeService {
   private readonly palindromeRepository: PalindromeRepository;
   private readonly logger: Logger;
+
   constructor() {
     this.palindromeRepository = new PalindromeRepository();
     this.logger = new WinstonLogger();
@@ -56,7 +57,7 @@ export class PalindromeService {
     const cleaned = word.toLowerCase().replace(/[^a-z0-9]/gi, '');
     return cleaned === cleaned.split('').reverse().join('');
   }
-  
+
   async getLatest(limit: number): Promise<any> {
     try {
       return await this.palindromeRepository.getLatest(limit);
@@ -67,17 +68,21 @@ export class PalindromeService {
   }
 
   async findByWord(word: string) {
-    const palindrome = await this.palindromeRepository.findByWord(word);
-    if (!palindrome) return null;
-  
-    return {
-      uuid: palindrome.uuid,
-      word: palindrome.word,
-      isPalindrome: palindrome.isPalindrome,
-      createdAt: palindrome.createdAt,
-      deletedAt: palindrome.deletedAt || null,
-      modifiedAt: palindrome.modifiedAt || null
-    };
-  }
+    try {
+      const palindrome = await this.palindromeRepository.findByWord(word);
+      if (!palindrome) return null;
 
+      return {
+        uuid: palindrome.uuid,
+        word: palindrome.word,
+        isPalindrome: palindrome.isPalindrome,
+        createdAt: palindrome.createdAt,
+        deletedAt: palindrome.deletedAt || null,
+        modifiedAt: palindrome.modifiedAt || null
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
 }
