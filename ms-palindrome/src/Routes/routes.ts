@@ -28,5 +28,6 @@ router.post('/v1/users/authenticate', (req: Request, res: Response) => usersCont
 /* Palindrome */
 
 router.post('/v1/palidrome', (req: Request, res: Response) => palindromeController.create(req, res));
-
+router.get('/v1/palidrome', (req: Request, res: Response) => palindromeController.getAll(req, res));
+router.get('/v1/palidrome/latest', (req: Request, res: Response) => palindromeController.getLatest(req, res));
 export default router;

@@ -74,7 +74,7 @@ export class PalindromeController {
       res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).json({ success: false });
     }
   }
-  
+
   async delete(req: Request, res: Response) {
     try {
       const uuidParam = req.params.palindromeId;
@@ -89,4 +89,26 @@ export class PalindromeController {
       res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).json({ success: false });
     }
   }
+
+  async getLatest(req: Request, res: Response) {
+    try {
+      const limitParam = req.query.limit;
+      const limit = parseInt(limitParam as string) || 5;
+  
+      const response = await this.palindromeService.getLatest(limit);
+  
+      if (response.success) {
+        res.status(HttpResponseCodes.OK).send({
+          status: GeneralConstants.STATUS_OK,
+          palindromes: response.palindromes
+        });
+      } else {
+        throw new ControllerError('Error getting latest palindromes', HttpResponseCodes.BAD_REQUEST);
+      }
+    } catch (error) {
+      this.logger.error(error);
+      res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).json({ success: false });
+    }
+  }
+  
 }

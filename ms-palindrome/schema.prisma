@@ -24,6 +24,7 @@ model Palindrome {
   uuid       String   @unique @default(uuid())
   word       String
   isPalindrome Boolean
+  active       Boolean  @default(true)
   createdAt  DateTime @default(now())
   modifiedAt DateTime? @updatedAt
 

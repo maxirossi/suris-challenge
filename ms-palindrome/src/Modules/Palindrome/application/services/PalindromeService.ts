@@ -57,4 +57,13 @@ export class PalindromeService {
     return cleaned === cleaned.split('').reverse().join('');
   }
   
+  async getLatest(limit: number): Promise<any> {
+    try {
+      return await this.palindromeRepository.getLatest(limit);
+    } catch (error) {
+      this.logger.error(error);
+      return { success: false, message: 'Error retrieving latest palindromes' };
+    }
+  }
+  
 }

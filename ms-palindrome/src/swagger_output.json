@@ -105,9 +105,132 @@
           }
         }
       }
+    },
+    "/v1/palindromes": {
+      "post": {
+        "description": "Create a new palindrome entry",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PalindromeInput"
+              },
+              "example": {
+                "word": "neuquen"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Palindrome created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Palindrome"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get all palindrome entries",
+        "responses": {
+          "200": {
+            "description": "List of palindromes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Palindrome"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/palindromes/{palindromeId}": {
+      "get": {
+        "description": "Get a single palindrome by ID",
+        "parameters": [
+          {
+            "name": "palindromeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Palindrome found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Palindrome"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Palindrome not found"
+          }
+        }
+      }
     }
   },
   "components": {
-    "securitySchemes": {}
+    "securitySchemes": {},
+    "schemas": {
+      "Palindrome": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "example": "5f4dcc3b5aa765d61d8327deb882cf99"
+          },
+          "word": {
+            "type": "string",
+            "example": "neuquen"
+          },
+          "isPalindrome": {
+            "type": "boolean",
+            "example": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-05-07T12:00:00Z"
+          },
+          "deletedAt": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "example": null
+          },
+          "modifiedAt": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "example": "2025-05-07T15:30:00Z"
+          }
+        },
+        "required": ["uuid", "word", "isPalindrome", "createdAt"]
+      },
+      "PalindromeInput": {
+        "type": "object",
+        "required": ["word"],
+        "properties": {
+          "word": {
+            "type": "string",
+            "example": "reconocer"
+          }
+        }
+      }
+    }
   }
 }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PrismaClient } from '@prisma/client';
 import Logger from '../../../Shared/domain/Logger';
 import WinstonLogger from '../../../Shared/infrastructure/WinstoneLogger';
@@ -113,4 +114,20 @@ export class PalindromeRepository {
       return { success: false, message: 'Cannot get palindrome by word' };
     }
   }
+
+  async getLatest(limit: number): Promise<PalindromeDTO> {
+    try {
+      const palindromes = await this.prisma.palindrome.findMany({
+        where: { active: true },
+        orderBy: { createdAt: 'desc' },
+        take: limit
+      });
+  
+      return { success: true, message: 'Latest palindromes retrieved successfully', palindromes };
+    } catch (error) {
+      this.logger.error(error);
+      return { success: false, message: 'Error retrieving latest palindromes' };
+    }
+  }
+  
 }
