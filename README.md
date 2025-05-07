@@ -1,5 +1,7 @@
 # 🧠 Palindrome Challenge
 
+![image](https://github.com/user-attachments/assets/0c9125d8-162c-4f83-b33d-a1aefb6a6e2d)
+
 Este proyecto consiste en una aplicación fullstack para verificar si una palabra o frase es un **palíndromo**, almacenarla en una base de datos y mostrar un historial reciente.
 
 ---
