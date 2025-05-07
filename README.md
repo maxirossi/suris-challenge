@@ -6,13 +6,12 @@ Luego, ejecutar el comando
 
 En linux
 dar permisos a rebuild.sh y migration.sh
-sudo chmod +x rebuild.sh
-sudo chmod +x migrations.sh
+sudo chmod +x scripts/linux/rebuild.sh
 
 y luego
 
-.rebuild.sh (hacer el build + clean)
-.migrations.sh (correr migration + seeder)
+scripts/linux/.rebuild.sh (hacer el build + clean)
+scripts/linux/.migrations.sh (correr migration + seeder)
 
 para windows, tenemos 
 rebuild.bat y migrations.bat

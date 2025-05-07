@@ -16,7 +16,8 @@ if (!existsSync(clientPath)) {
 
 import bodyParser from 'body-parser';
 import errorHandler from 'errorhandler';
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
+import Router from 'express-promise-router';
 import * as http from 'http';
 import httpStatus from 'http-status';
 import Logger from './Modules/Shared/domain/Logger';
@@ -25,7 +26,6 @@ import cors from 'cors';
 import routes from './Routes/routes';
 import swaggerUi from 'swagger-ui-express';
 const swaggerOutput = require('./swagger_output.json'); // eslint-disable-line @typescript-eslint/no-var-requires
-
 export class Server {
   private express: express.Express;
   readonly port: string;
@@ -36,15 +36,14 @@ export class Server {
     this.port = port;
     this.logger = new WinstonLogger();
     this.express = express();
-
-    this.express.use(cors());
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: true }));
-    this.express.use(errorHandler());
+    const router = Router();
+    router.use(cors());
+    router.use(errorHandler());
     this.express.use(routes);
     this.express.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
-    
-    this.express.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    router.use((err: Error, req: Request, res: Response) => {
       this.logger.error(err);
       res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.message);
     });

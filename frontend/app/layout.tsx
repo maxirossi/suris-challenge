@@ -2,8 +2,8 @@
 import React from 'react';
 
 export const metadata = {
-  title: 'Palíndromos',
-  description:'',
+  title: 'Mi app',
+  description: 'Descripción de la app',
 };
 
 export default function RootLayout({
