@@ -93,7 +93,7 @@ npm run lint
 ## Create User CURL
 
 ```bash
-curl -X POST http://localhost:3030/v1/users -H "Content-Type: application/json" -d '{
+curl -X POST http://localhost:3000/v1/users -H "Content-Type: application/json" -d '{
 "uuid": "",
 "name": "John",
 "userName": "johndoe123",
@@ -106,7 +106,7 @@ curl -X POST http://localhost:3030/v1/users -H "Content-Type: application/json" 
 ```
 
 ```bash
-curl -X POST http://localhost:3030/v1/users -H "Content-Type: application/json" -d '{
+curl -X POST http://localhost:3000/v1/users -H "Content-Type: application/json" -d '{
 "uuid": "",
 "name": "Juan Maximiliano",
 "lastName": "Rossi",
@@ -121,25 +121,25 @@ curl -X POST http://localhost:3030/v1/users -H "Content-Type: application/json" 
 ## Get all users CURL
 
 ```bash
-curl -X GET http://localhost:3030/v1/users
+curl -X GET http://localhost:3000/v1/users
 ```
 
 ## Get user by UUID
 
 ```bash
-curl -X GET http://localhost:3030/v1/users/e2fbadaf-7f56-4a47-86d8-439e655369d8
+curl -X GET http://localhost:3000/v1/users/e2fbadaf-7f56-4a47-86d8-439e655369d8
 ```
 
 ## Delete user (soft delete)
 
 ```bash
-curl -X DELETE http://localhost:3030/v1/users/e2fbadaf-7f56-4a47-86d8-439e655369d8
+curl -X DELETE http://localhost:3000/v1/users/e2fbadaf-7f56-4a47-86d8-439e655369d8
 ```
 
 ## Update User
 
 ```bash
-curl -X PUT http://localhost:3030/v1/users/2e771f88-eff2-45da-8d39-090365dbc09d -H "Content-Type: application/json" -d '{
+curl -X PUT http://localhost:3000/v1/users/2e771f88-eff2-45da-8d39-090365dbc09d -H "Content-Type: application/json" -d '{
 "name": "John",
 "lastName": "Doe",
 "password": "P@ssw0rd123",
@@ -150,7 +150,7 @@ curl -X PUT http://localhost:3030/v1/users/2e771f88-eff2-45da-8d39-090365dbc09d 
 ## Auth User
 
 ```bash
-curl -X POST http://localhost:3030/v1/users/authenticate -H "Content-Type: application/json" -d '{
+curl -X POST http://localhost:3000/v1/users/authenticate -H "Content-Type: application/json" -d '{
 "email": "maximilianokaizen@gmail.com",
 "password": "P@ssw0rd123"
 }'

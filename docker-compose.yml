@@ -1,10 +1,42 @@
 version: '3.7'
+
 services:
   postgres:
     image: postgres:14
-    ports:
-      - '5432:5432'
+    container_name: postgres_mate
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=mate
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  ms-palindrome:
+    build:
+      context: ./ms-palindrome
+    container_name: ms_palindrome
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/mate
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./ms-palindrome:/src
+    command: npm run start:dev
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_mate
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@mate.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:

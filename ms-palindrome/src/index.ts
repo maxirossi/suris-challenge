@@ -1,6 +1,6 @@
 import { Server } from './server';
 
-const PORT = process.env.PORT || '3030';
+const PORT = process.env.PORT || '3000';
 
 async function main() {
   const server = new Server(PORT);

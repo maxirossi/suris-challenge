@@ -19,6 +19,17 @@ model User {
   @@map("users")
 }
 
+model Palindrome {
+  id         Int      @id @default(autoincrement())
+  uuid       String   @unique @default(uuid())
+  word       String
+  isPalindrome Boolean
+  createdAt  DateTime @default(now())
+  modifiedAt DateTime? @updatedAt
+
+  @@map("palindromes")
+}
+
 generator client {
   provider = "prisma-client-js"
 }
