@@ -52,7 +52,7 @@ export class PalindromeService {
     return await this.palindromeRepository.delete(uuid);
   }
 
-  private isPalindrome(word: string): boolean {
+  public isPalindrome(word: string): boolean {
     const cleaned = word.toLowerCase().replace(/[^a-z0-9]/gi, '');
     return cleaned === cleaned.split('').reverse().join('');
   }
@@ -65,5 +65,19 @@ export class PalindromeService {
       return { success: false, message: 'Error retrieving latest palindromes' };
     }
   }
+
+  async findByWord(word: string) {
+    const palindrome = await this.palindromeRepository.findByWord(word);
+    if (!palindrome) return null;
   
+    return {
+      uuid: palindrome.uuid,
+      word: palindrome.word,
+      isPalindrome: palindrome.isPalindrome,
+      createdAt: palindrome.createdAt,
+      deletedAt: palindrome.deletedAt || null,
+      modifiedAt: palindrome.modifiedAt || null
+    };
+  }
+
 }

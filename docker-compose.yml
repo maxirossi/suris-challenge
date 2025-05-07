@@ -38,5 +38,20 @@ services:
     depends_on:
       - postgres
 
+  frontend:
+    build:
+      context: ./frontend
+    container_name: nextjs_frontend
+    ports:
+      - "3030:3030"
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    environment:
+      - PORT=3030
+    command: npm run dev
+    depends_on:
+      - ms-palindrome
+
 volumes:
   postgres_data:

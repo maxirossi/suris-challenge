@@ -29,6 +29,16 @@ export class PalindromeController {
         return res.status(HttpResponseCodes.BAD_REQUEST).json({ success: false, message: 'Missing or invalid word' });
       }
 
+      const existing = await this.palindromeService.findByWord(word);
+
+      if (existing) {
+        return res.status(HttpResponseCodes.OK).json({
+          success: true,
+          message: 'Palindrome already exists',
+          palindrome: existing
+        });
+      }
+
       const response = await this.palindromeService.create(uuid.valueAsString, word, createdAt);
       if (response.success) {
         res.status(HttpResponseCodes.CREATED).json(response);
@@ -94,9 +104,9 @@ export class PalindromeController {
     try {
       const limitParam = req.query.limit;
       const limit = parseInt(limitParam as string) || 5;
-  
+
       const response = await this.palindromeService.getLatest(limit);
-  
+
       if (response.success) {
         res.status(HttpResponseCodes.OK).send({
           status: GeneralConstants.STATUS_OK,
@@ -110,5 +120,5 @@ export class PalindromeController {
       res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).json({ success: false });
     }
   }
-  
+
 }

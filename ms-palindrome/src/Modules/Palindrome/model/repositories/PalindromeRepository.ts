@@ -130,4 +130,22 @@ export class PalindromeRepository {
     }
   }
   
+  async findByWord(word: string): Promise<Palindrome | null> {
+    const result = await this.prisma.palindrome.findUnique({
+      where: { word }
+    });
+  
+    if (!result) return null;
+  
+    return new Palindrome(
+      new Uuid(result.uuid),
+      new Word(result.word),
+      new IsPalindrome(result.is_palindrome),
+      new CreatedAt(result.created_at),
+      result.deleted_at ? new DeletedAt(result.deleted_at) : undefined,
+      result.modified_at ? new ModifiedAt(result.modified_at) : undefined
+    );
+  }
+  
+  
 }
