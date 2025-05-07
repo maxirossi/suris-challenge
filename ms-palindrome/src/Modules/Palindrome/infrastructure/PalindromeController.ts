@@ -23,7 +23,13 @@ export class PalindromeController {
     try {
       const uuid = new Uuid(uuidv4());
       const createdAt = new CreatedAt(new Date());
-      const response = await this.palindromeService.create(uuid.valueAsString, createdAt);
+      const word = req.body.word;
+
+      if (!word || typeof word !== 'string') {
+        return res.status(HttpResponseCodes.BAD_REQUEST).json({ success: false, message: 'Missing or invalid word' });
+      }
+
+      const response = await this.palindromeService.create(uuid.valueAsString, word, createdAt);
       if (response.success) {
         res.status(HttpResponseCodes.CREATED).json(response);
       } else {
@@ -68,23 +74,7 @@ export class PalindromeController {
       res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).json({ success: false });
     }
   }
-
-  async update(req: Request, res: Response) {
-    try {
-      const uuidParam = req.params.palindromeId;
-      const word = req.body.word;
-      const active = req.body.active;
-      const response = await this.palindromeService.update(uuidParam, {
-        word,
-        active
-      });
-      res.status(response.success ? HttpResponseCodes.OK : HttpResponseCodes.BAD_REQUEST).json(response);
-    } catch (error) {
-      this.logger.error(error);
-      res.status(HttpResponseCodes.INTERNAL_SERVER_ERROR).json({ success: false });
-    }
-  }
-
+  
   async delete(req: Request, res: Response) {
     try {
       const uuidParam = req.params.palindromeId;

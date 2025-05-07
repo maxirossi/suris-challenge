@@ -18,13 +18,14 @@ export class PalindromeService {
 
   async create(
     uuid: string,
+    word: string,
     createdAt: CreatedAt
   ): Promise<InternalResponse> {
     try {
       const palindrome: Palindrome = {
-        uuid: uuid,
-        word: '', 
-        isPalindrome: false,
+        uuid,
+        word,
+        isPalindrome: this.isPalindrome(word),
         createdAt: createdAt.value
       };
       return await this.palindromeRepository.create(palindrome);
@@ -47,25 +48,13 @@ export class PalindromeService {
     return await this.palindromeRepository.getById(uuid);
   }
 
-  async update(uuid: string, palindromeData: any): Promise<InternalResponse> {
-    try {
-      const existingPalindrome = await this.getById(uuid);
-      if (existingPalindrome.success) {
-        const updatedPalindromeData: Palindrome = {
-          ...existingPalindrome.palindrome,
-          ...palindromeData
-        };
-        return await this.palindromeRepository.update(uuid, updatedPalindromeData);
-      } else {
-        return { success: false, message: 'Palindrome not found' };
-      }
-    } catch (error) {
-      this.logger.error(error);
-      return { success: false, message: 'Error updating palindrome' };
-    }
-  }
-
   async delete(uuid: string): Promise<any> {
     return await this.palindromeRepository.delete(uuid);
   }
+
+  private isPalindrome(word: string): boolean {
+    const cleaned = word.toLowerCase().replace(/[^a-z0-9]/gi, '');
+    return cleaned === cleaned.split('').reverse().join('');
+  }
+  
 }

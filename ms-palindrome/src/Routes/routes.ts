@@ -1,9 +1,11 @@
 import { Router, Request, Response } from 'express';
 /* controllers */
 import { UsersController } from '../Modules/User/infrastructure/UsersController';
+import { PalindromeController } from '../Modules/Palindrome/infrastructure/PalindromeController';
 
 const router = Router();
 const usersController = new UsersController();
+const palindromeController = new PalindromeController();
 
 /* Health Check */
 
@@ -22,4 +24,9 @@ router.get('/v1/users/:userId', (req: Request, res: Response) => usersController
 router.put('/v1/users/:userId', (req: Request, res: Response) => usersController.updateUser(req, res));
 router.delete('/v1/users/:userId', (req: Request, res: Response) => usersController.deleteUser(req, res));
 router.post('/v1/users/authenticate', (req: Request, res: Response) => usersController.authenticateUser(req, res));
+
+/* Palindrome */
+
+router.post('/v1/palidrome', (req: Request, res: Response) => palindromeController.create(req, res));
+
 export default router;
